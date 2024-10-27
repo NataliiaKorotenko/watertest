@@ -4,6 +4,8 @@ import pino from "pino-http";
 
 import { env } from "./utils/env.js";
 
+import * as contactServices from "./services/contacts.js"
+
 export const startServer = ()=> {
     const app = express();
 
@@ -13,12 +15,33 @@ export const startServer = ()=> {
             target: "pino-pretty"
         }
     });
-    // app.use(logger);
 
-    app.get("/", (req, res)=> {
+    app.get("/contacts", async (req, res) => {
+        const data = await contactServices.getContacts();
+
         res.json({
-            message: "Start project"
+          status: 200,
+            message: 'Successfully find contacts!',
+            data,
         });
+    });
+
+    app.get('/contacts/:id', async (req, res) => {
+      const { id } = req.params;
+      const data = await contactServices.getContactById(id);
+
+      if (!data) {
+        return res.status(404).json({
+          status: 404,
+          message: `Contact with id=${id} not found`,
+        });
+      }
+
+      res.json({
+        status: 200,
+        message: `Contact successfully find`,
+        data,
+      });
     });
 
     app.use((req, res)=> {
@@ -37,3 +60,15 @@ export const startServer = ()=> {
 
     app.listen(port, ()=> console.log(`Server running on ${port} PORT`));
 };
+
+
+// BfQXKHJqI0siMmhY   Nata
+
+// nataliiakorotenko sPGM29E5MfWcIJ6n
+
+//mongodb+srv://nataliiakorotenko:<db_password>@cluster0.a6xey.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+
+//mongodb+srv://Nata:<db_password>@cluster0.aquz4.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+
+//npx kill-port 3000
+
