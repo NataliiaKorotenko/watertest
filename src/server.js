@@ -62,9 +62,6 @@ export const startServer = ()=> {
 };
 
 
-// BfQXKHJqI0siMmhY   Nata
-
-//mongodb+srv://Nata:<db_password>@cluster0.aquz4.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
 
 //npx kill-port 3000
 
