@@ -64,10 +64,6 @@ export const startServer = ()=> {
 
 // BfQXKHJqI0siMmhY   Nata
 
-// nataliiakorotenko sPGM29E5MfWcIJ6n
-
-//mongodb+srv://nataliiakorotenko:<db_password>@cluster0.a6xey.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
-
 //mongodb+srv://Nata:<db_password>@cluster0.aquz4.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
 
 //npx kill-port 3000
