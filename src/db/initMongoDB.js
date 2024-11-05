@@ -1,5 +1,3 @@
-//mongodb+srv://Nata:<db_password>@cluster0.aquz4.mongodb.net/my-contacts?retryWrites=true&w=majority&appName=Cluster0
-
 import mongoose from "mongoose";
 
 import { env } from "../utils/env.js";
