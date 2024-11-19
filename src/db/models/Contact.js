@@ -24,13 +24,23 @@ const contactsSchema = new Schema(
       default: 'personal',
       required: true,
     },
-    
   },
   {
     timestamps: true,
     versionKey: false,
   },
 );
+
+export const sortByList = [
+  '_id',
+  'name',
+  'phoneNumber',
+  'email',
+  'isFavourite',
+  'contactType',
+  'createdAt',
+  'updatedAt',
+];
 
 const ContactsCollection = model('contacts', contactsSchema);
 
