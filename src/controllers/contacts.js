@@ -10,15 +10,14 @@ import { sortByList } from '../db/models/Contact.js';
 export const getContactsController = async (req, res) => {
   const { page, perPage } = parsePaginationParams(req.query);
   const { sortBy, sortOrder } = parseSortParams(req.query, sortByList);
-
-    const userId = req.user._id;
+ const userId = req.user._id;
 
   const data = await contactServices.getContacts({
     page,
     perPage,
     sortBy,
     sortOrder,
-
+    filter,
     userId,
   });
 
@@ -31,7 +30,8 @@ export const getContactsController = async (req, res) => {
 
 export const getContactsByIdController = async (req, res) => {
   const { id } = req.params;
-  const data = await contactServices.getContactById(id);
+   const userId = req.user._id;
+  const data = await contactServices.getContactById({ id, userId });
 
   if (!data) {
     throw createHttpError(404, `Contact with id=${id} not found`);
@@ -57,9 +57,11 @@ export const addContactController = async (req, res) => {
 
 export const upsertContactController = async (req, res) => {
   const { id: _id } = req.params;
+  const userId = req.user._id;
 
   const result = await contactServices.updateContact({
     _id,
+    userId,
     payload: req.body,
     options: {
       upsert: true,
@@ -93,8 +95,9 @@ export const patchContactController = async (req, res) => {
 
 export const deleteContactController = async (req, res) => {
   const { id: _id } = req.params;
+  const userId = req.user._id;
 
-  const data = await contactServices.deleteContact({ _id });
+  const data = await contactServices.deleteContact({ _id, userId });
 
   if (!data) {
     throw createHttpError(404, `Contact with id=${_id} not found`);
