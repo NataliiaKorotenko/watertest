@@ -10,7 +10,8 @@ import { sortByList } from '../db/models/Contact.js';
 export const getContactsController = async (req, res) => {
   const { page, perPage } = parsePaginationParams(req.query);
   const { sortBy, sortOrder } = parseSortParams(req.query, sortByList);
- const userId = req.user._id;
+  const filter = req.query.filter || {};
+  const userId = req.user._id;
 
   const data = await contactServices.getContacts({
     page,
