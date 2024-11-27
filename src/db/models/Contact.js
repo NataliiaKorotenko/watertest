@@ -38,6 +38,7 @@ const contactsSchema = new Schema(
 
 export const sortByList = [
   '_id',
+  'userId',
   'name',
   'phoneNumber',
   'email',

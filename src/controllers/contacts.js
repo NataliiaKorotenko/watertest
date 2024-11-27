@@ -40,7 +40,7 @@ export const getContactsByIdController = async (req, res) => {
 
   res.json({
     status: 200,
-    message: `Successfully patched a contact!`,
+    message: `Successfully find contacts!`,
     data,
   });
 };
@@ -80,8 +80,12 @@ export const upsertContactController = async (req, res) => {
 
 export const patchContactController = async (req, res) => {
   const { id: _id } = req.params;
-
-  const result = await contactServices.updateContact({ _id, payload: req.body });
+  const userId = req.user._id;
+  const result = await contactServices.updateContact({
+    _id,
+    userId,
+    payload: req.body,
+  });
 
   if (!result) {
     throw createHttpError(404, `Contact with id=${_id} not found`);
