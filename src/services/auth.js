@@ -174,7 +174,7 @@ export const refreshUserSession = async ({ sessionId, refreshToken }) => {
 
  export const resetPassword = async ({ token, password }) => {
    try {
-     const { email } = jwt.verify(token, jwtSecret);n
+     const { email } = jwt.verify(token, jwtSecret);
 
      const user = await UserCollection.findOne({ email });
      if (!user) {
