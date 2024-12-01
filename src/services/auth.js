@@ -73,6 +73,7 @@ export const register = async (payload) => {
   return newUser;
 };
 
+
 export const verify = async (token) => {
   try {
     const { email } = jwt.verify(token, jwtSecret);
@@ -133,6 +134,71 @@ export const refreshUserSession = async ({ sessionId, refreshToken }) => {
     ...newSession,
   });
 };
+
+ export const sendResetEmail = async (email) => {
+   const user = await UserCollection.findOne({ email });
+   if (!user) {
+     throw createHttpError(404, 'User not found!');
+   }
+
+   const token = jwt.sign({ email }, jwtSecret, { expiresIn: '5m' });
+
+   const resetLink = `${appDomain}/reset-password?token=${token}`;
+
+   const emailTemplate = `
+    <p>To reset your password, please click the link below:</p>
+    <a href="${resetLink}">${resetLink}</a>
+  `;
+
+   const resetEmail = {
+     to: email,
+     subject: 'Reset Password',
+     html: emailTemplate,
+   };
+
+   try {
+     await sendEmail(resetEmail);
+   } catch (error) {
+     throw createHttpError(
+       500,
+       'Failed to send the email, please try again later.',
+     );
+   }
+
+   return {
+     status: 200,
+     message: 'Reset password email has been successfully sent.',
+     data: {},
+   };
+ };
+
+ export const resetPassword = async ({ token, password }) => {
+   try {
+     const { email } = jwt.verify(token, jwtSecret);n
+
+     const user = await UserCollection.findOne({ email });
+     if (!user) {
+       throw createHttpError(404, 'User not found!');
+     }
+
+     const hashPassword = await bcrypt.hash(password, 10);
+
+     await UserCollection.findByIdAndUpdate(user._id, {
+       password: hashPassword,
+     });
+
+     await SessionCollection.deleteMany({ userId: user._id });
+
+     return {
+       status: 200,
+       message: 'Password has been successfully reset.',
+       data: {},
+     };
+   } catch (error) {
+     throw createHttpError(401, 'Token is expired or invalid.');
+   }
+ };
+
 
 export const logout = (sessionId) =>
   SessionCollection.deleteOne({ _id: sessionId });
