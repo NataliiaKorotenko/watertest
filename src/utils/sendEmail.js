@@ -1,25 +1,39 @@
 import nodemailer from 'nodemailer';
-import 'dotenv/config';
 
-const { SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASSWORD, SMTP_FROM } =
-  process.env;
+import { SMTP } from '../constants/contacts.js';
+import { env } from '../utils/env.js';
 
-const nodemailerConfig = {
-  host: SMTP_HOST,
-  port: Number(SMTP_PORT), // Обычно 587 для Brevo
-  secure: Number(SMTP_PORT) === 465, // true для порта 465, false для 587
+const transporter = nodemailer.createTransport({
+  host: env(SMTP.SMTP_HOST),
+  port: Number(env(SMTP.SMTP_PORT)),
+  secure: false,
   auth: {
-    user: SMTP_USER,
-    pass: SMTP_PASSWORD,
+    user: env(SMTP.SMTP_USER),
+    pass: env(SMTP.SMTP_PASSWORD),
   },
+});
+
+export const sendEmail = async (options) => {
+return await transporter.sendMail(options);
 };
 
-const transport = nodemailer.createTransport(nodemailerConfig);
-
-export const sendEmail = (data) => {
-  const email = { ...data, from: SMTP_FROM };
-  return transport.sendMail(email);
+ /*Тестова функція для перевірки
+const testEmail = async () => {
+  try {
+    const result = await sendEmail({
+      from: env(SMTP.SMTP_USER), // Ваш email (відправник)
+      to: 'recipient@example.com', // Email отримувача
+      subject: 'Test Email',
+      text: 'This is a test email sent from Node.js',
+    });
+    console.log('Email sent successfully:', result);
+  } catch (error) {
+    console.error('Error sending email:', error);
+  }
 };
+
+// Виклик тестової функції
+testEmail();
 
 /*const { UKR_NET_PASSWORD, UKR_NET_FROM } = process.env;
 
