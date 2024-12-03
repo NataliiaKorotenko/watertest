@@ -25,6 +25,7 @@ const emailTemplatePath = path.join(TEMPLATE_DIR, 'verify-email.html');
 
 const appDomain = env('APP_DOMAIN');
 const jwtSecret = env('JWT_SECRET');
+const smtpFrom = env('SMTP_FROM');
 
 const createSession = () => {
   const accessToken = randomBytes(30).toString('base64');
@@ -73,7 +74,6 @@ export const register = async (payload) => {
   return newUser;
 };
 
-
 export const verify = async (token) => {
   try {
     const { email } = jwt.verify(token, jwtSecret);
@@ -91,10 +91,6 @@ export const login = async ({ email, password }) => {
     const user = await UserCollection.findOne({ email });
     if (!user) {
         throw createHttpError(401, 'Email or password invalid');
-    }
-
-    if (!user.verify) {
-        throw createHttpError(401, 'Email not verified');
     }
 
 
@@ -151,7 +147,7 @@ export const refreshUserSession = async ({ sessionId, refreshToken }) => {
   `;
 
    const resetEmail = {
-     from: env(SMTP.SMTP_FROM),
+     from: smtpFrom,
      to: email,
      subject: 'Reset Password',
      html: emailTemplate,
