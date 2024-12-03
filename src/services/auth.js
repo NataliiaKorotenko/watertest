@@ -151,6 +151,7 @@ export const refreshUserSession = async ({ sessionId, refreshToken }) => {
   `;
 
    const resetEmail = {
+     from: env(SMTP.SMTP_FROM),
      to: email,
      subject: 'Reset Password',
      html: emailTemplate,
