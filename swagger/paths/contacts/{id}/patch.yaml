@@ -1,0 +1,100 @@
+tags:
+  - Contacts
+summary: Update contact
+operationId: updateContact
+description: Partially update a contact's information
+security:
+  - bearerAuth: []
+parameters:
+  - in: path
+    name: id
+    required: true
+    schema:
+      type: string
+      example: '672a0261a63e142b393877d6'
+requestBody:
+  description: Some properties can be updated - "name", "phoneNumber", "email", "isFavourite", "contactType", "photo"
+  required: false
+  content:
+    multipart/form-data:
+      schema:
+        type: object
+        properties:
+          name:
+            type: string
+          phoneNumber:
+            type: string
+          email:
+            type: string
+          isFavourite:
+            type: boolean
+          contactType:
+            type: string
+            enum: ['work', 'home', 'personal']
+          photo:
+            description: Contact's photo file (*.jpg, *.png, etc.)
+            type: string
+            format: binary
+    application/json:
+      schema:
+        type: object
+        properties:
+          phoneNumber:
+            type: string
+            example: '+380777777777'
+          email:
+            type: string
+            example: 'taty@gmail.com'
+responses:
+  '200':
+    description: Contact updated successfully
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            _id:
+              description: "Contact's id"
+              type: string
+              example: 672a0261a63e142b393877d6
+            name:
+              description: "Contact's name"
+              type: string
+              example: 'Taty Tat'
+            phoneNumber:
+              description: "Contact's phone number"
+              type: string
+              example: '+380777777777'
+            email:
+              description: "Contact's email"
+              type: string
+              example: 'taty@gmail.com'
+            isFavourite:
+              description: 'True if contact is favourite'
+              type: boolean
+              example: true
+            contactType:
+              description: "Contact's type"
+              type: string
+              enum: ['work', 'home', 'personal']
+            photo:
+              description: "Link to contact's photo"
+              type: string
+              example: 'https://res.cloudinary.com/asvasv/image/upload/v1717744418/lpzhpmnssdfa83lc25ux.jpg'
+            userId:
+              description: Contact's user id (internal application data)
+              type: string
+              example: 672a0261a63e142b393877d6
+            createdAt:
+              description: Database timestamp (auto-generated)
+              type: string
+              example: '2024-12-16T05:52:08.998Z'
+            updatedAt:
+              description: Database timestamp (auto-generated)
+              type: string
+              example: '2024-12-16T05:52:08.998Z'
+
+  '401':
+    $ref: '../../../components/responses/401.yaml'
+  '404':
+    $ref: '../../../components/responses/404.yaml'
