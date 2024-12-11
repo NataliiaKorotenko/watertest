@@ -6,6 +6,7 @@ import { env } from "./utils/env.js";
 
 import contactsRouter from './routers/contacts.js';
 import authRouter  from './routers/auth.js'
+import waterRouter from './routers/water.js'
 
 import { notFoundHandler } from "./middlewares/notFoundHandler.js";
 import { errorHandler } from './middlewares/errorHandler.js';
@@ -24,6 +25,8 @@ export const startServer = ()=> {
 
   app.use('/auth', authRouter);
   app.use('/contacts', contactsRouter);
+
+  app.use('/water', waterRouter);
 
   app.use(notFoundHandler);
 
