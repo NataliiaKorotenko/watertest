@@ -9,6 +9,7 @@ import jwt from 'jsonwebtoken';
 
 import UserCollection from '../db/models/User.js';
 import SessionCollection from '../db/models/Session.js';
+/*import WaterCollection from '../db/models/water.js';*/
 
 import {
   accessTokenLifetime,
@@ -20,6 +21,7 @@ import { env } from '../utils/env.js';
 
 
 import { TEMPLATE_DIR } from '../constants/contacts.js';
+import WaterCollection from '../db/models/water.js';
 
 const emailTemplatePath = path.join(TEMPLATE_DIR, 'verify-email.html');
 
@@ -203,3 +205,5 @@ export const logout = (sessionId) =>
 export const findSession = (filter) => SessionCollection.findOne(filter);
 
 export const findUser = (filter) => UserCollection.findOne(filter);
+
+/*export const findWater = (filter) => WaterCollection.findOne(filter);*/
